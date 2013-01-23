@@ -1,4 +1,4 @@
-# Epub::Search
+# EPUB::Search
 
 TODO: Write a gem description
 
