@@ -1,19 +1,28 @@
 require 'pathname'
+require 'yaml'
 require 'thor'
 require 'epub/search'
 
 Class.new(Thor) {
   APP_DIR = File.expand_path('../../app', __FILE__)
+  DEFAULT_CONFIG = {
+    :config_path => File.join(Dir.home, '.epub-search/config.yaml'),
+    :db_path     => File.join(Dir.home, '.epub-search/epub-search.db')
+  }
   require File.join(APP_DIR, 'init')
   desc 'init', 'setup database'
   method_option :db, :banner  => 'DB_PATH',
                      :default => File.join(ENV['HOME'], '.epub-search/epub-search.db'),
                      :desc    => 'path to database file. basedir of the file is used as database directory'
-  def init(path=Init::DEFAULT_DB_PATH)
-    begin
-      Init.new(path).run
-    rescue => err
-      abort err.message
-    end
+  def init
+    Init.new(config[:db_path]).run
+  end
+
+  private
+
+  def config
+    @config ||=
+      File.file?(DEFAULT_CONFIG[:config_path]) ? YAML.parse_file(DEFAULT_CONFIG[:config_path])
+                                               : DEFAULT_CONFIG
   end
 }.start

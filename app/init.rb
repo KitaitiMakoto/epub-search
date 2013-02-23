@@ -1,6 +1,5 @@
 class Init
-  DEFAULT_DB_PATH = File.join(Dir.home, '.epub-search/epub-search.db')
-  def initialize(path=DEFAULT_DB_PATH)
+  def initialize(path)
     path = Pathname.new(path)
     if path.directory?
       @db_dir = path
