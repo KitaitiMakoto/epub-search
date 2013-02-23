@@ -13,6 +13,8 @@ Class.new(Thor) {
     require path
   end
 
+  class_option 'config', :type => :string, :aliases => '-c', :default => nil, :desc => 'path to config file'
+
   desc 'init', 'setup database'
   method_option :db_dir, :banner  => 'DB_DIR',
                          :default => File.join(Dir.home, '.epub-search/db'),
@@ -36,8 +38,13 @@ Class.new(Thor) {
   private
 
   def config
-    @config ||=
-      File.file?(DEFAULT_CONFIG[:config_path]) ? YAML.parse_file(DEFAULT_CONFIG[:config_path])
-                                               : DEFAULT_CONFIG
+    return @config if @config
+
+    config_file = options[:config] ||
+      (File.file?('.epub-searchrc') ? '.epub-searchrc'
+                                    : File.join(Dir.home, '.epub-search', 'epub-searchrc'))
+    conf = YAML.load_file(config_file) if File.file? config_file.to_s
+
+    @config = DEFAULT_CONFIG.merge(conf || {})
   end
 }.start
