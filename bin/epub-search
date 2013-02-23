@@ -1,3 +1,19 @@
-#!/usr/bin/env ruby
-
+require 'pathname'
+require 'thor'
 require 'epub/search'
+
+Class.new(Thor) {
+  APP_DIR = File.expand_path('../../app', __FILE__)
+  require File.join(APP_DIR, 'init')
+  desc 'init', 'setup database'
+  method_option :db, :banner  => 'DB_PATH',
+                     :default => File.join(ENV['HOME'], '.epub-search/epub-search.db'),
+                     :desc    => 'path to database file. basedir of the file is used as database directory'
+  def init(path=Init::DEFAULT_DB_PATH)
+    begin
+      Init.new(path).run
+    rescue => err
+      abort err.message
+    end
+  end
+}.start
