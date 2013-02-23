@@ -38,6 +38,11 @@ Class.new(Thor) {
     Search.new(File.join(config[:db_dir], Init::FILE_NAME), word).run
   end
 
+  desc 'remove FILE', 'remove FILE from database'
+  def remove(file)
+    Remove.new(File.join(config[:db_dir], Init::FILE_NAME), file).run
+  end
+
   private
 
   def config
