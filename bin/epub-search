@@ -9,13 +9,21 @@ Class.new(Thor) {
     :config_path => File.join(Dir.home, '.epub-search/config.yaml'),
     :db_dir      => File.join(Dir.home, '.epub-search/db')
   }
-  require File.join(APP_DIR, 'init')
+  Dir["#{APP_DIR}/*.rb"].each do |path|
+    require path
+  end
+
   desc 'init', 'setup database'
   method_option :db_dir, :banner  => 'DB_DIR',
                          :default => File.join(Dir.home, '.epub-search/db'),
                          :desc    => 'path to database directory'
   def init(db_dir=config[:db_dir])
     Init.new(db_dir).run
+  end
+
+  desc 'add FILE', 'add FILE to database'
+  def add(file)
+    Add.new(File.join(config[:db_dir], Init::FILE_NAME), file).run
   end
 
   private
