@@ -26,7 +26,7 @@ Class.new(Thor) {
     Add.new(File.join(config[:db_dir], Init::FILE_NAME), file).run
   end
 
-  desc 'search SEARCH_WORD', 'search word from database'
+  desc 'search WORD', 'search word from database'
   method_option :xml, :type => :boolean,
                       :desc => 'search word from documents including tags'
   def search(word)
