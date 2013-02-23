@@ -15,7 +15,9 @@ class Search
         puts records.first.title
         puts location
         records.each do |record|
-          puts "  #{record.iri}"
+          record.content.each_line do |line|
+            puts "  [#{record.iri}]: #{line}" if line =~ /#{Regexp.escape(@word)}/
+          end
         end
       end
     end
