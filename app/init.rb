@@ -1,13 +1,8 @@
 class Init
-  def initialize(path)
-    path = Pathname.new(path)
-    if path.directory?
-      @db_dir = path
-      @db_file = @db_dir + 'epub-search.db'
-    else
-      @db_dir = path.dirname
-      @db_file = path
-    end
+  FILE_NAME = 'epub-search.db'
+  def initialize(db_dir)
+    @db_dir = Pathname.new(db_dir)
+    @db_file = @db_dir + FILE_NAME
   end
 
   def run
