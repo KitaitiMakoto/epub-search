@@ -10,7 +10,6 @@ class Init
     @db_dir.mkpath
     Groonga::Context.default_options = {:encoding => :utf8}
     Groonga::Database.create(:path => @db_file.to_path)
-    # key: path/to/epub-file
     Groonga::Schema.create_table 'Books', :type => :array
     Groonga::Schema.change_table 'Books' do |table|
       table.text 'location' # file path or URI
