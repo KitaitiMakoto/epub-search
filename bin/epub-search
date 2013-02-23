@@ -13,6 +13,12 @@ Class.new(Thor) {
     require path
   end
 
+  class << self
+    def exit_on_failure?
+      true
+    end
+  end
+
   class_option 'config', :type => :string, :aliases => '-c', :default => nil, :desc => 'path to config file'
 
   desc 'init [DB_DIR]', 'setup database'
