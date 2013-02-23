@@ -10,8 +10,8 @@ class Init
     @db_dir.mkpath
     Groonga::Context.default_options = {:encoding => :utf8}
     Groonga::Database.create(:path => @db_file.to_path)
-    Groonga::Schema.create_table 'Books', :type => :array
-    Groonga::Schema.change_table 'Books' do |table|
+    Groonga::Schema.create_table 'Pages', :type => :array
+    Groonga::Schema.change_table 'Pages' do |table|
       table.text 'location' # file path or URI
       table.text 'iri' # inner IRI
       table.text 'title'
@@ -23,9 +23,9 @@ class Init
                                  :normalizer => :NormalizerAuto,
                                  :default_tokenizer => 'TokenBigram'
     Groonga::Schema.change_table 'Terms' do |table|
-      table.index 'Books.title'
-      table.index 'Books.metadata'
-      table.index 'Books.content'
+      table.index 'Pages.title'
+      table.index 'Pages.metadata'
+      table.index 'Pages.content'
     end
   end
 end
