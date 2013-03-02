@@ -5,6 +5,7 @@ class Watch
   end
 
   def run
+    $stderr.puts "start to watch #{@directories.join(', ')}"
     Listen.to *@directories, :filter => /\.epub\Z/ do |modified, added, removed|
       modified.each do |file_path|
         file_path.force_encoding 'UTF-8'
