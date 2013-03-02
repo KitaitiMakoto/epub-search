@@ -21,9 +21,10 @@ Class.new(Thor) {
 
   class_option 'config', :type => :string, :aliases => '-c', :default => nil, :desc => 'path to config file'
 
+  method_option 'force', :type => :boolean, :aliases => '-f', :default => false, :desc => 'Overwrite config and database files'
   desc 'init [DB_DIR]', 'setup database'
   def init(db_dir=config[:db_dir])
-    Init.new(db_dir).run
+    Init.new(db_dir).run(options[:force])
   end
 
   desc 'add FILE', 'add FILE to database'

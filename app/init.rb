@@ -5,8 +5,9 @@ class Init
     @db_file = @db_dir + FILE_NAME
   end
 
-  def run
+  def run(force=false)
     $stderr.puts "create database #{@db_file}"
+    @db_dir.rmtree if force
     @db_dir.mkpath
     Groonga::Context.default_options = {:encoding => :utf8}
     Groonga::Database.create(:path => @db_file.to_path)
