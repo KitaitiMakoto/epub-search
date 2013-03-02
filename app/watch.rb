@@ -1,5 +1,6 @@
 class Watch
   def initialize(db_path, directories)
+    raise 'specify at least one directory' if directories.empty?
     @db_path, @directories = db_path, directories
   end
 
