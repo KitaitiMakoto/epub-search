@@ -1,10 +1,10 @@
 class Watch
-  def initialize(db_path, directory_path)
-    @db_path, @directory = db_path, Pathname(directory_path)
+  def initialize(db_path, directories)
+    @db_path, @directories = db_path, directories
   end
 
   def run
-    Listen.to @directory.to_path, :filter => /\.epub\Z/ do |modified, added, removed|
+    Listen.to *@directories, :filter => /\.epub\Z/ do |modified, added, removed|
       modified.each do |file_path|
         file_path.force_encoding 'UTF-8'
         begin
