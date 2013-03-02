@@ -10,7 +10,7 @@ class Search
       records = pages.select {|record|
         record['content'] =~ @word
       }
-      result = records.group_by {|record| record.location}
+      result = records.group_by(&:location)
       result.each_pair do |location, records|
         puts records.first.title
         puts location
