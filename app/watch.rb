@@ -40,6 +40,6 @@ class Watch
 
   def notify(message)
     $stderr.puts message
-    `notify-send #{message.shellescape}`
+    `notify-send #{message.shellescape}` unless `which notify-send`.empty?
   end
 end
