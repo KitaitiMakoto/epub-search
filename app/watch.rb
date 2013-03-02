@@ -8,6 +8,7 @@ class Watch
     $stderr.puts "start to watch #{@directories.join(', ')}"
     Listen.to *@directories, :filter => /\.epub\Z/ do |modified, added, removed|
       modified.each do |file_path|
+        next unless file_path =~ /\.epub\Z/
         file_path.force_encoding 'UTF-8'
         begin
           Remove.new(@db_path, file_path).run
@@ -18,6 +19,7 @@ class Watch
         end
       end
       added.each do |file_path|
+        next unless file_path =~ /\.epub\Z/
         file_path.force_encoding 'UTF-8'
         begin
           Add.new(@db_path, file_path).run
@@ -27,6 +29,7 @@ class Watch
         end
       end
       removed.each do |file_path|
+        next unless file_path =~ /\.epub\Z/
         file_path.force_encoding 'UTF-8'
         begin
           Remove.new(@db_path, file_path).run
