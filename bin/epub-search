@@ -41,6 +41,7 @@ Class.new(Thor) {
 
   desc 'watch DIRECTORY', 'index all of EPUB files in DIRECTORY'
   def watch(directory)
+    Watch.new(File.join(config[:db_dir], Init::FILE_NAME), directory).run
   end
 
   desc 'remove FILE', 'remove FILE from database'

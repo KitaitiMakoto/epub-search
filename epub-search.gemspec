@@ -20,4 +20,5 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'epub-parser'
   gem.add_runtime_dependency 'rroonga'
   gem.add_runtime_dependency 'thor'
+  gem.add_runtime_dependency 'listen'
 end
