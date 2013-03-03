@@ -39,7 +39,7 @@ Class.new(Thor) {
     Search.new(File.join(config[:db_dir], Init::FILE_NAME), word).run
   end
 
-  desc 'watch DIRECTORY [DIRECTORY ...]', 'index all of EPUB files in DIRECTORY'
+  desc 'watch [DIRECTORY [DIRECTORY ...]]', 'index all of EPUB files in DIRECTORY'
   def watch(*directories)
     directories = config[:directories] if directories.empty?
     Watch.new(File.join(config[:db_dir], Init::FILE_NAME), directories).run
