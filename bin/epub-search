@@ -19,33 +19,33 @@ Class.new(Thor) {
     end
   end
 
-  class_option 'config', :type => :string, :aliases => '-c', :default => nil, :desc => 'path to config file'
+  class_option 'config', :type => :string, :aliases => '-c', :default => nil, :desc => 'Path to config file'
 
   method_option 'force', :type => :boolean, :aliases => '-f', :default => false, :desc => 'Overwrite config and database files'
-  desc 'init [DB_DIR]', 'setup database'
+  desc 'init [DB_DIR]', 'Setup database'
   def init(db_dir=config[:db_dir])
     Init.new(db_dir).run(options[:force])
   end
 
-  desc 'add FILE', 'add FILE to database'
+  desc 'add FILE', 'Add FILE to database'
   def add(file)
     Add.new(File.join(config[:db_dir], Init::FILE_NAME), file).run
   end
 
-  desc 'search WORD', 'search word from database'
+  desc 'search WORD', 'Search WORD from database'
   method_option :xml, :type => :boolean,
                       :desc => 'search word from documents including tags'
   def search(word)
     Search.new(File.join(config[:db_dir], Init::FILE_NAME), word).run
   end
 
-  desc 'watch [DIRECTORY [DIRECTORY ...]]', 'index all of EPUB files in DIRECTORY'
+  desc 'watch [DIRECTORY [DIRECTORY ...]]', 'Index all of EPUB files in DIRECTORY'
   def watch(*directories)
     directories = config[:directories] if directories.empty?
     Watch.new(File.join(config[:db_dir], Init::FILE_NAME), directories).run
   end
 
-  desc 'remove FILE', 'remove FILE from database'
+  desc 'remove FILE', 'Remove FILE from database'
   def remove(file)
     Remove.new(File.join(config[:db_dir], Init::FILE_NAME), file).run
   end
