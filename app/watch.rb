@@ -5,7 +5,10 @@ class Watch
   end
 
   def run
-    $stderr.puts "start to watch #{@directories.join(', ')}"
+    $stderr.puts 'start to watch:'
+    @directories.each do |dir|
+      $stderr.puts "  * #{dir}"
+    end
     Listen.to *@directories, :filter => /\.epub\Z/ do |modified, added, removed|
       modified.each do |file_path|
         next unless file_path =~ /\.epub\Z/
