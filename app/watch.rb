@@ -5,6 +5,7 @@ class Watch
   end
 
   def run
+    $PROGRAM_NAME = File.basename($PROGRAM_NAME)
     $stderr.puts 'start to watch:'
     @directories.each do |dir|
       $stderr.puts "  * #{dir}"
