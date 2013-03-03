@@ -1,24 +1,26 @@
-# EPUB::Search
+# EPUB Search
 
-TODO: Write a gem description
+Search engine for EPUB files on local machine
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'epub-search'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
+<!--
     $ gem install epub-search
+-->
 
 ## Usage
 
-TODO: Write usage instructions here
+    $ epub-search help
+    Tasks:
+      epub-search add FILE                           # Add FILE to database
+      epub-search help [TASK]                        # Describe available tasks or one specific task
+      epub-search init [DB_DIR]                      # Setup database
+      epub-search remove FILE                        # Remove FILE from database
+      epub-search search WORD                        # Search WORD from database
+      epub-search watch [DIRECTORY [DIRECTORY ...]]  # Index all of EPUB files in DIRECTORY
+    
+    Options:
+      -c, [--config=CONFIG]  # Path to config file
 
 ## Contributing
 
