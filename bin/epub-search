@@ -21,7 +21,7 @@ Class.new(Thor) {
 
   class_option :config, :type => :string, :aliases => '-c', :default => DEFAULT_CONFIG[:config_path], :desc => 'Path to config file'
 
-  method_option 'force', :type => :boolean, :aliases => '-f', :default => false, :desc => 'Overwrite config and database files'
+  method_option :force, :type => :boolean, :aliases => '-f', :default => false, :desc => 'Remove existing database before init'
   desc 'init [DB_DIR]', 'Setup database'
   def init(db_dir=config[:db_dir])
     Init.new(db_dir).run(options[:force])
