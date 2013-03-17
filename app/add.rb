@@ -15,7 +15,7 @@ class Add
         pages.add('location' => location.to_s,
                   'iri'      => content.href.to_s,
                   'title'    => book.title,
-                  'content'  => Nokogiri.HTML(content.read).search('body').first.content)
+                  'content'  => Nokogiri.XML(Nokogiri.XML(content.read).search('body').first.to_xml).content)
       end
     end
   end
