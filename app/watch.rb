@@ -17,7 +17,7 @@ class Watch
         begin
           Remove.new(@db_path, file_path).run
           Add.new(@db_path, file_path).run
-          notify %Q|EPUB MODIFIED: #{file_path}|
+          notify %Q|MODIFIED: #{file_path}|
         rescue => error
           $stderr.puts error
         end
@@ -27,7 +27,7 @@ class Watch
         file_path.force_encoding 'UTF-8'
         begin
           Add.new(@db_path, file_path).run
-          notify %Q|EPUB ADDED: #{file_path}|
+          notify %Q|ADDED: #{file_path}|
         rescue => error
           $stderr.puts error
         end
@@ -37,7 +37,7 @@ class Watch
         file_path.force_encoding 'UTF-8'
         begin
           Remove.new(@db_path, file_path).run
-          notify %Q|EPUB REMOVED: #{file_path}|
+          notify %Q|REMOVED: #{file_path}|
         rescue => error
           $stderr.puts error
         end
