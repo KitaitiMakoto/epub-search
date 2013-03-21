@@ -3,6 +3,7 @@ require 'shellwords'
 require 'epub/parser'
 require 'groonga'
 require 'listen'
+require 'highline'
 
 module EPUB
   module Search

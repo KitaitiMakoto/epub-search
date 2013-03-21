@@ -4,6 +4,8 @@ class Search
   end
 
   def run
+    re = /#{Regexp.escape(@word)}/o
+    hl = HighLine.new
     Groonga::Database.open @db_path do
       pages = Groonga['Pages']
 
@@ -22,7 +24,7 @@ class Search
           doc = Nokogiri.XML(item.read)
           title = doc.search('title').first.text
           record.content.each_line do |line|
-            puts "  [#{title}(#{record.iri})]: #{line}" if line =~ /#{Regexp.escape(@word)}/
+            puts "  [#{title}(#{record.iri})]: #{line}".gsub(re, hl.color(@word, :red, :bold)) if line =~ re
           end
         end
       end
