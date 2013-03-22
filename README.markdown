@@ -22,6 +22,10 @@ Search engine for EPUB files on local machine
     Options:
       -c, [--config=CONFIG]  # Path to config file
 
+To watch directories in backend:
+
+    $ epub-search watch >/dev/null 2>&1 &
+
 ## Contributing
 
 1. Fork it
