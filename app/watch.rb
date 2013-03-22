@@ -1,4 +1,6 @@
 class Watch
+  EPUB_RE = /\.epub\Z/io
+
   def initialize(db_path, directories)
     raise ArgumentError, 'specify at least one directory' if directories.empty?
     @db_path, @directories = db_path, directories
@@ -10,9 +12,9 @@ class Watch
     @directories.each do |dir|
       $stderr.puts "  * #{dir}"
     end
-    Listen.to *@directories, :filter => /\.epub\Z/ do |modified, added, removed|
+    Listen.to *@directories, :filter => EPUB_RE do |modified, added, removed|
       modified.each do |file_path|
-        next unless file_path =~ /\.epub\Z/
+        next unless file_path =~ EPUB_RE
         file_path.force_encoding 'UTF-8'
         begin
           Remove.new(@db_path, file_path).run
@@ -23,7 +25,7 @@ class Watch
         end
       end
       added.each do |file_path|
-        next unless file_path =~ /\.epub\Z/
+        next unless file_path =~ EPUB_RE
         file_path.force_encoding 'UTF-8'
         begin
           Add.new(@db_path, file_path).run
@@ -33,7 +35,7 @@ class Watch
         end
       end
       removed.each do |file_path|
-        next unless file_path =~ /\.epub\Z/
+        next unless file_path =~ EPUB_RE
         file_path.force_encoding 'UTF-8'
         begin
           Remove.new(@db_path, file_path).run
