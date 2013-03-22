@@ -24,7 +24,11 @@ class Search
           doc = Nokogiri.XML(item.read)
           title = doc.search('title').first.text
           record.content.each_line do |line|
-            puts "  [#{title}(#{record.iri})]: #{line}".gsub(re, hl.color(@word, :red, :bold)) if line =~ re
+            if line =~ re
+              result = "  [#{title}(#{record.iri})]: #{line}"
+              result.gsub!(re, hl.color(@word, :red, :bold)) if $stdout.tty?
+              puts result
+            end
           end
         end
       end
