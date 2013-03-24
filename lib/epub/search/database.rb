@@ -67,7 +67,6 @@ module EPUB
       end
 
       def search(word)
-        records = nil
         open do
           result = pages.select {|record| record['content'] =~ word}.group_by(&:location)
           yield result
