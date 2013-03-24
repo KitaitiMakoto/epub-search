@@ -5,9 +5,4 @@ require 'groonga'
 require 'listen'
 require 'highline'
 require 'epub/search/database'
-
-module EPUB
-  module Search
-    # Your code goes here...
-  end
-end
+require 'epub/search/formatter'
