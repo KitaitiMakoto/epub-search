@@ -68,9 +68,9 @@ class Watch
       Dir["#{dir}/**/*.epub"].each do |file_path|
         next if File.file? exit_time_file and File.mtime(file_path) < exit_time
         begin
-          removed = @db.remove file_path rescue nil
+          removed = @db.remove(file_path)
           @db.add file_path
-          operation = removed ? 'MODIFIED' : 'ADDED'
+          operation = removed == 0 ? 'ADDED' : 'MODIFIED'
           notify "#{operation}: #{file_path}"
         rescue => error
           $stderr.puts error

@@ -41,10 +41,12 @@ module EPUB
         end
       end
 
+      # @return [Integer] the number of added recoreds
       def add(file_path)
         file_path = Pathname.new(file_path) unless file_path.kind_of? Pathname
         location = file_path.expand_path
         book = EPUB::Parser.parse(location)
+        record_count = 0
         open do
           book.each_content do |content|
             next unless content.media_type == 'application/xhtml+xml'
@@ -52,23 +54,27 @@ module EPUB
                       'iri'      => content.href.to_s,
                       'title'    => book.title,
                       'content'  => Nokogiri.XML(Nokogiri.XML(content.read).search('body').first.to_xml).content)
+            record_count += 1
           end
         end
-        self
+        record_count
       end
 
+      # @return [Integer] the number of removed recoreds
       def remove(file_path)
         file_path = Pathname.new(file_path) unless file_path.kind_of? Pathname
         location = file_path.expand_path.to_path
+        record_count = 0
         open do
           records = pages.select {|record|
             record.location == location
           }
+          record_count = records.length
           records.each do |record|
             record.key.delete
           end
         end
-        self
+        record_count
       end
 
       def search(word)
