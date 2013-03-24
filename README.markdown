@@ -8,6 +8,10 @@ Search engine for EPUB files on local machine
     $ gem install epub-search
 -->
 
+    git clone git://github.com/KitaitiMakoto/epub-search.git
+    cd epub-search
+    rake install
+
 ## Usage
 
     $ epub-search help
