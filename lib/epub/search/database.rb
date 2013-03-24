@@ -26,7 +26,8 @@ module EPUB
         Groonga::Schema.change_table 'Pages' do |table|
           table.text 'location' # file path or URI
           table.text 'iri' # inner IRI
-          table.text 'title'
+          table.text 'book_title'
+          table.text 'page_title'
           table.text 'metadata'
           table.text 'content'
         end
@@ -35,7 +36,7 @@ module EPUB
         :normalizer => :NormalizerAuto,
         :default_tokenizer => 'TokenBigram'
         Groonga::Schema.change_table 'Terms' do |table|
-          table.index 'Pages.title'
+          table.index 'Pages.book_title'
           table.index 'Pages.metadata'
           table.index 'Pages.content'
         end
@@ -50,10 +51,14 @@ module EPUB
         open do
           book.each_content do |content|
             next unless content.media_type == 'application/xhtml+xml'
-            pages.add('location' => location.to_s,
-                      'iri'      => content.href.to_s,
-                      'title'    => book.title,
-                      'content'  => Nokogiri.XML(Nokogiri.XML(content.read).search('body').first.to_xml).content)
+            doc = Nokogiri.XML(content.read)
+            page_title = doc.search('title').first.text
+            body = Nokogiri.XML(doc.search('body').first.to_xml).content
+            pages.add('location'   => location.to_s,
+                      'iri'        => content.href.to_s,
+                      'book_title' => book.title,
+                      'page_title' => page_title,
+                      'content'    => body)
             record_count += 1
           end
         end

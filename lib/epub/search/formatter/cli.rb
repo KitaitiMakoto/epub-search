@@ -13,14 +13,11 @@ module EPUB
           @data.each_pair do |location, records|
             book = books[location]
             records.each do |record|
-              item = book.manifest.items.find {|i| i.href.to_s == record.iri}
-              doc = Nokogiri.XML(item.read)
-              page_title = doc.search('title').first.text
               record.content.each_line do |line|
                 if line =~ re
                   result = line.chomp
                   result.gsub!(re, hilighter.color(@word, :red, :bold)) if hilight?
-                  result << "  [#{page_title}(#{record.title}): #{location} - #{record.iri}]"
+                  result << "  [#{record.page_title}(#{record.book_title}): #{location} - #{record.iri}]"
                   puts result
                 end
               end
