@@ -7,10 +7,10 @@ class Search
   def run
     re = /#{Regexp.escape(@word)}/o
     hl = HighLine.new if $stdout.tty?
+    books = Hash.new {|h, iri|
+      h[iri] = EPUB::Parser.parse(iri)
+    }
     @db.search @word do |result|
-      books = Hash.new {|h, iri|
-        h[iri] = EPUB::Parser.parse(iri)
-      }
       result.each_pair do |location, records|
         puts "#{records.first.title}(#{location})"
         book = books[location]
