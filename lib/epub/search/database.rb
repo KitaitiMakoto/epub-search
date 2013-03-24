@@ -12,6 +12,10 @@ module EPUB
         @db_file ||= @db_dir + FILE_NAME
       end
 
+      def pages
+        @pages ||= Groonga['Pages']
+      end
+
       def create(force=false)
         @db_dir.rmtree if force
         @db_dir.mkpath
@@ -40,8 +44,6 @@ module EPUB
         location = file_path.expand_path
         book = EPUB::Parser.parse(location)
         Groonga::Database.open db_file.to_path do
-          pages = Groonga['Pages']
-
           book.each_content do |content|
             next unless content.media_type == 'application/xhtml+xml'
             pages.add('location' => location.to_s,
@@ -55,7 +57,7 @@ module EPUB
       def remove(file_path)
         location = file_path.expand_path.to_path
         Groonga::Database.open db_file.to_path do
-          records = Groonga['Pages'].select {|record|
+          records = pages.select {|record|
             record.location == location
           }
           records.each do |record|
