@@ -70,7 +70,7 @@ class Watch
         begin
           removed = @db.remove(file_path)
           @db.add file_path
-          operation = removed == 0 ? 'ADDED' : 'MODIFIED'
+          operation = removed.zero? ? 'ADDED' : 'MODIFIED'
           notify "#{operation}: #{file_path}"
         rescue => error
           $stderr.puts error
