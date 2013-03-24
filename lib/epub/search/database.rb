@@ -74,9 +74,9 @@ module EPUB
           records = pages.select {|record|
             record.location == location
           }
-          record_count = records.length
           records.each do |record|
             record.key.delete
+            record_count += 1
           end
         end
         record_count
