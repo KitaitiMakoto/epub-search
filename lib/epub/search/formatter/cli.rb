@@ -2,7 +2,7 @@ module EPUB
   module Search
     module Formatter
       class CLI
-        def initialize(data, word, highlight=$stderr.tty?)
+        def initialize(data, word, highlight=false)
           @data, @word, @highlight = data, word, highlight
         end
 
