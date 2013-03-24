@@ -18,7 +18,7 @@ module EPUB
         Groonga['Pages']
       end
 
-      def create(force=false)
+      def init(force=false)
         @db_dir.rmtree if force
         @db_dir.mkpath
         Groonga::Database.create :path => db_file.to_path

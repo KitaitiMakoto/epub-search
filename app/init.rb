@@ -5,6 +5,6 @@ class Init
 
   def run(force=false)
     $stderr.puts "create database #{@db.db_file}"
-    @db.create force
+    @db.init force
   end
 end
