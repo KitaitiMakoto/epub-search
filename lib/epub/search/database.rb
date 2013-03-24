@@ -5,6 +5,7 @@ module EPUB
 
       def initialize(db_dir)
         @db_dir = Pathname.new(db_dir)
+        Groonga::Context.default_options = {:encoding => :utf8}
       end
 
       def db_file
@@ -14,7 +15,6 @@ module EPUB
       def create(force=false)
         @db_dir.rmtree if force
         @db_dir.mkpath
-        Groonga::Context.default_options = {:encoding => :utf8}
         Groonga::Database.create(:path => db_file.to_path)
         Groonga::Schema.create_table 'Pages', :type => :array
         Groonga::Schema.change_table 'Pages' do |table|
