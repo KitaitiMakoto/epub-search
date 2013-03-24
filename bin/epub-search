@@ -29,25 +29,25 @@ Class.new(Thor) {
 
   desc 'add FILE', 'Add FILE to database'
   def add(file)
-    Add.new(File.join(config[:db_dir], Init::FILE_NAME), file).run
+    Add.new(File.join(config[:db_dir], EPUB::Search::Database::FILE_NAME), file).run
   end
 
   desc 'search WORD', 'Search WORD from database'
   method_option :xml, :type => :boolean,
                       :desc => 'search word from documents including tags'
   def search(word)
-    Search.new(File.join(config[:db_dir], Init::FILE_NAME), word).run
+    Search.new(File.join(config[:db_dir], EPUB::Search::Database::FILE_NAME), word).run
   end
 
   desc 'watch [DIRECTORY [DIRECTORY ...]]', 'Index all of EPUB files in DIRECTORY'
   def watch(*directories)
     directories = config[:directories] if directories.empty?
-    Watch.new(File.join(config[:db_dir], Init::FILE_NAME), directories).run
+    Watch.new(File.join(config[:db_dir], EPUB::Search::Database::FILE_NAME), directories).run
   end
 
   desc 'remove FILE', 'Remove FILE from database'
   def remove(file)
-    Remove.new(File.join(config[:db_dir], Init::FILE_NAME), file).run
+    Remove.new(File.join(config[:db_dir], EPUB::Search::Database::FILE_NAME), file).run
   end
 
   private

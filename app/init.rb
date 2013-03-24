@@ -1,12 +1,10 @@
 class Init
-  FILE_NAME = 'epub-search.db'
   def initialize(db_dir)
-    @db_dir = Pathname.new(db_dir)
-    @db_file = @db_dir + FILE_NAME
+    @db = EPUB::Search::Database.new(db_dir)
   end
 
   def run(force=false)
-    $stderr.puts "create database #{@db_file}"
-    EPUB::Search::Database.new(@db_dir).create(force)
+    $stderr.puts "create database #{@db.db_file}"
+    @db.create force
   end
 end
