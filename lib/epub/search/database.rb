@@ -3,6 +3,8 @@ module EPUB
     class Database
       FILE_NAME = 'epub-search.db'
 
+      attr_reader :db_dir
+
       def initialize(db_dir)
         @db_dir = Pathname === db_dir ? db_dir : Pathname.new(db_dir)
         Groonga::Context.default_options = {:encoding => :utf8}

@@ -1,9 +1,10 @@
 class Watch
   EPUB_RE = /\.epub\Z/io
 
-  def initialize(db_path, directories)
+  def initialize(db_file, directories)
     raise ArgumentError, 'specify at least one directory' if directories.empty?
-    @db_path, @directories = db_path, directories
+    @directories = directories
+    @db = EPUB::Search::Database.new(db_file)
   end
 
   def run
@@ -19,8 +20,8 @@ class Watch
           next unless file_path =~ EPUB_RE
           file_path.force_encoding 'UTF-8'
           begin
-            Remove.new(@db_path, file_path).run
-            Add.new(@db_path, file_path).run
+            Remove.new(@db.db_dir, file_path).run
+            Add.new(@db.db_dir, file_path).run
             notify %Q|MODIFIED: #{file_path}|
           rescue => error
             $stderr.puts error
@@ -30,7 +31,7 @@ class Watch
           next unless file_path =~ EPUB_RE
           file_path.force_encoding 'UTF-8'
           begin
-            Add.new(@db_path, file_path).run
+            Add.new(@db.db_dir, file_path).run
             notify %Q|ADDED: #{file_path}|
           rescue => error
             $stderr.puts error
@@ -40,7 +41,7 @@ class Watch
           next unless file_path =~ EPUB_RE
           file_path.force_encoding 'UTF-8'
           begin
-            Remove.new(@db_path, file_path).run
+            Remove.new(@db.db_dir, file_path).run
             notify %Q|REMOVED: #{file_path}|
           rescue => error
             $stderr.puts error
@@ -59,7 +60,7 @@ class Watch
   end
 
   def exit_time_file
-    File.expand_path('../../exittime', @db_path)
+    File.expand_path('../../exittime', @db.db_dir)
   end
 
   def catch_up
@@ -67,8 +68,8 @@ class Watch
       Dir["#{dir}/**/*.epub"].each do |file_path|
         next if File.file? exit_time_file and File.mtime(file_path) < exit_time
         begin
-          removed = Remove.new(@db_path, file_path).run rescue nil
-          Add.new(@db_path, file_path).run
+          removed = Remove.new(@db.db_dir, file_path).run rescue nil
+          Add.new(@db.db_dir, file_path).run
           operation = removed ? 'MODIFIED' : 'ADDED'
           notify "#{operation}: #{file_path}"
         rescue => error

@@ -42,7 +42,7 @@ Class.new(Thor) {
   desc 'watch [DIRECTORY [DIRECTORY ...]]', 'Index all of EPUB files in DIRECTORY'
   def watch(*directories)
     directories = config[:directories] if directories.empty?
-    Watch.new(File.join(config[:db_dir], EPUB::Search::Database::FILE_NAME), directories).run
+    Watch.new(config[:db_dir], directories).run
   end
 
   desc 'remove FILE', 'Remove FILE from database'
