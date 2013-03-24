@@ -5,7 +5,8 @@ class Add
     @db = EPUB::Search::Database.new(db_dir)
   end
 
-  def run
+  def run(overwrite=true)
+    @db.remove @file_path if overwrite
     @db.add @file_path
   end
 end
