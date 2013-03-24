@@ -29,7 +29,7 @@ Class.new(Thor) {
 
   desc 'add FILE', 'Add FILE to database'
   def add(file)
-    Add.new(File.join(config[:db_dir], EPUB::Search::Database::FILE_NAME), file).run
+    Add.new(config[:db_dir], file).run
   end
 
   desc 'search WORD', 'Search WORD from database'
