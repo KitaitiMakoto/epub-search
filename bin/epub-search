@@ -27,10 +27,10 @@ Class.new(Thor) {
     Init.new(db_dir).run(options[:force])
   end
 
-  method_option :overwrite, :type => :boolean, :default => true, :desc => 'Remove existing indices of given book before adding'
+  method_option :update, :type => :boolean, :default => true, :desc => 'Remove existing indices of given book before adding'
   desc 'add FILE', 'Add FILE to database'
   def add(file)
-    Add.new(config[:db_dir], file).run(options[:overwrite])
+    Add.new(config[:db_dir], file).run(options[:update])
   end
 
   desc 'search WORD', 'Search WORD from database'
