@@ -47,7 +47,7 @@ Class.new(Thor) {
 
   desc 'remove FILE', 'Remove FILE from database'
   def remove(file)
-    Remove.new(File.join(config[:db_dir], EPUB::Search::Database::FILE_NAME), file).run
+    Remove.new(config[:db_dir], file).run
   end
 
   private

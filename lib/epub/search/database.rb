@@ -51,6 +51,18 @@ module EPUB
           end
         end
       end
+
+      def remove(file_path)
+        location = file_path.expand_path.to_path
+        Groonga::Database.open db_file.to_path do
+          records = Groonga['Pages'].select {|record|
+            record.location == location
+          }
+          records.each do |record|
+            record.key.delete
+          end
+        end
+      end
     end
   end
 end

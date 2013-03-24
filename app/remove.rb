@@ -1,17 +1,10 @@
 class Remove
-  def initialize(db_path, file_path)
-    @db_path, @file_path = db_path, Pathname(file_path)
+  def initialize(db_dir, file_path)
+    @file_path = Pathname(file_path)
+    @db = EPUB::Search::Database.new(db_dir)
   end
 
   def run
-    location = @file_path.expand_path.to_s
-    Groonga::Database.open @db_path do
-      records = Groonga['Pages'].select {|record|
-        record.location == location
-      }
-      records.each do |record|
-        record.key.delete
-      end
-    end
+    @db.remove @file_path
   end
 end
