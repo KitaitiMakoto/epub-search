@@ -4,7 +4,7 @@ module EPUB
       FILE_NAME = 'epub-search.db'
 
       def initialize(db_dir)
-        @db_dir = Pathname.new(db_dir)
+        @db_dir = Pathname === db_dir ? db_dir : Pathname.new(db_dir)
         Groonga::Context.default_options = {:encoding => :utf8}
       end
 
