@@ -36,7 +36,7 @@ Class.new(Thor) {
   method_option :xml, :type => :boolean,
                       :desc => 'search word from documents including tags'
   def search(word)
-    Search.new(File.join(config[:db_dir], EPUB::Search::Database::FILE_NAME), word).run
+    Search.new(config[:db_dir], word).run
   end
 
   desc 'watch [DIRECTORY [DIRECTORY ...]]', 'Index all of EPUB files in DIRECTORY'

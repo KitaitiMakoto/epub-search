@@ -1,18 +1,13 @@
 class Search
-  def initialize(db_path, search_word)
-    @db_path, @word = db_path, search_word
+  def initialize(db_dir, search_word)
+    @word = search_word
+    @db = EPUB::Search::Database.new(db_dir)
   end
 
   def run
     re = /#{Regexp.escape(@word)}/o
     hl = HighLine.new if $stdout.tty?
-    Groonga::Database.open @db_path do
-      pages = Groonga['Pages']
-
-      records = pages.select {|record|
-        record['content'] =~ @word
-      }
-      result = records.group_by(&:location)
+    @db.search @word do |result|
       books = Hash.new {|h, iri|
         h[iri] = EPUB::Parser.parse(iri)
       }
