@@ -7,11 +7,15 @@ module EPUB
         @db_dir = Pathname.new(db_dir)
       end
 
+      def db_file
+        @db_file ||= @db_dir + FILE_NAME
+      end
+
       def create(force=false)
         @db_dir.rmtree if force
         @db_dir.mkpath
         Groonga::Context.default_options = {:encoding => :utf8}
-        Groonga::Database.create(:path => @db_dir.join(FILE_NAME).to_path)
+        Groonga::Database.create(:path => db_file.to_path)
         Groonga::Schema.create_table 'Pages', :type => :array
         Groonga::Schema.change_table 'Pages' do |table|
           table.text 'location' # file path or URI
