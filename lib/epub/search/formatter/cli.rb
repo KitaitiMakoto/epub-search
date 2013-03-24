@@ -2,19 +2,19 @@ module EPUB
   module Search
     module Formatter
       class CLI
-        def initialize(data, word, hilight=$stderr.tty?)
-          @data, @word, @hilight = data, word, hilight
+        def initialize(data, word, highlight=$stderr.tty?)
+          @data, @word, @highlight = data, word, highlight
         end
 
         def format
           word_re = /#{Regexp.escape(@word)}/o
-          hilighter = HighLine.Style(:red, :bold) if hilight?
+          highlighter = HighLine.Style(:red, :bold) if highlight?
           @data.each_pair do |location, records|
             records.each do |record|
               record.content.each_line do |line|
                 next unless line =~ word_re
                 result = line.chomp
-                result.gsub! word_re, hilighter.color(@word) if hilight?
+                result.gsub! word_re, highlighter.color(@word) if highlight?
                 result << "  [#{record.page_title}(#{record.book_title}): #{location} - #{record.iri}]"
                 puts result
               end
@@ -22,8 +22,8 @@ module EPUB
           end
         end
 
-        def hilight?
-          @hilight
+        def highlight?
+          @highlight
         end
       end
     end
