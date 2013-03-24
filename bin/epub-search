@@ -34,8 +34,6 @@ Class.new(Thor) {
   end
 
   desc 'search WORD', 'Search WORD from database'
-  method_option :xml, :type => :boolean,
-                      :desc => 'search word from documents including tags'
   def search(word)
     Search.new(config[:db_dir], word).run
   end
