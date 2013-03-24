@@ -20,8 +20,8 @@ class Watch
           next unless file_path =~ EPUB_RE
           file_path.force_encoding 'UTF-8'
           begin
-            Remove.new(@db.db_dir, file_path).run
-            Add.new(@db.db_dir, file_path).run
+            @db.remove file_path
+            @db.add file_path
             notify %Q|MODIFIED: #{file_path}|
           rescue => error
             $stderr.puts error
@@ -31,7 +31,7 @@ class Watch
           next unless file_path =~ EPUB_RE
           file_path.force_encoding 'UTF-8'
           begin
-            Add.new(@db.db_dir, file_path).run
+            @db.add file_path
             notify %Q|ADDED: #{file_path}|
           rescue => error
             $stderr.puts error
@@ -41,7 +41,7 @@ class Watch
           next unless file_path =~ EPUB_RE
           file_path.force_encoding 'UTF-8'
           begin
-            Remove.new(@db.db_dir, file_path).run
+            @db.remove file_path
             notify %Q|REMOVED: #{file_path}|
           rescue => error
             $stderr.puts error
@@ -68,8 +68,8 @@ class Watch
       Dir["#{dir}/**/*.epub"].each do |file_path|
         next if File.file? exit_time_file and File.mtime(file_path) < exit_time
         begin
-          removed = Remove.new(@db.db_dir, file_path).run rescue nil
-          Add.new(@db.db_dir, file_path).run
+          removed = @db.remove file_path rescue nil
+          @db.add file_path
           operation = removed ? 'MODIFIED' : 'ADDED'
           notify "#{operation}: #{file_path}"
         rescue => error

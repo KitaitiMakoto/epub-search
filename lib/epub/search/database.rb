@@ -54,9 +54,11 @@ module EPUB
                       'content'  => Nokogiri.XML(Nokogiri.XML(content.read).search('body').first.to_xml).content)
           end
         end
+        self
       end
 
       def remove(file_path)
+        file_path = Pathname.new(file_path) unless file_path.kind_of? Pathname
         location = file_path.expand_path.to_path
         open do
           records = pages.select {|record|
@@ -66,6 +68,7 @@ module EPUB
             record.key.delete
           end
         end
+        self
       end
 
       def search(word)
@@ -78,11 +81,9 @@ module EPUB
       private
 
       def open
-        return Groonga::Database.open(db_file.to_path) unless block_given?
         Groonga::Database.open db_file.to_path do |database|
           yield database
         end
-        self
       end
     end
   end
