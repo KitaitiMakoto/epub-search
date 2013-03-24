@@ -5,7 +5,7 @@ class Search
 
   def run
     re = /#{Regexp.escape(@word)}/o
-    hl = HighLine.new
+    hl = HighLine.new if $stdout.tty?
     Groonga::Database.open @db_path do
       pages = Groonga['Pages']
 
