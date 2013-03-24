@@ -15,7 +15,7 @@ module EPUB
       end
 
       def pages
-        @pages ||= Groonga['Pages']
+        Groonga['Pages']
       end
 
       def create(force=false)
