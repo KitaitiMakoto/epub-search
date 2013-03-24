@@ -9,9 +9,7 @@ module EPUB
         def format
           re = /#{Regexp.escape(@word)}/o
           hilighter = HighLine.new if hilight?
-          books = Hash.new {|h, iri| h[iri] = EPUB::Parser.parse(iri)}
           @data.each_pair do |location, records|
-            book = books[location]
             records.each do |record|
               record.content.each_line do |line|
                 if line =~ re
