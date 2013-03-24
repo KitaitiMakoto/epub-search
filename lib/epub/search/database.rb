@@ -21,7 +21,7 @@ module EPUB
       def create(force=false)
         @db_dir.rmtree if force
         @db_dir.mkpath
-        Groonga::Database.create(:path => db_file.to_path)
+        Groonga::Database.create :path => db_file.to_path
         Groonga::Schema.create_table 'Pages', :type => :array
         Groonga::Schema.change_table 'Pages' do |table|
           table.text 'location' # file path or URI
