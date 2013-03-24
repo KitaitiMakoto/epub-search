@@ -60,7 +60,7 @@ class Watch
   end
 
   def exit_time_file
-    File.expand_path('../../exittime', @db.db_dir)
+    @db.db_dir.join('../exittime').to_path
   end
 
   def catch_up
