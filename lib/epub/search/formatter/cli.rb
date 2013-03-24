@@ -8,13 +8,13 @@ module EPUB
 
         def format
           re = /#{Regexp.escape(@word)}/o
-          hilighter = HighLine.new if hilight?
+          hilighter = HighLine.Style(:red, :bold) if hilight?
           @data.each_pair do |location, records|
             records.each do |record|
               record.content.each_line do |line|
                 next unless line =~ re
                 result = line.chomp
-                result.gsub!(re, hilighter.color(@word, :red, :bold)) if hilight?
+                result.gsub! re, hilighter.color(@word) if hilight?
                 result << "  [#{record.page_title}(#{record.book_title}): #{location} - #{record.iri}]"
                 puts result
               end
