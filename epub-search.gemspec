@@ -16,6 +16,7 @@ Gem::Specification.new do |gem|
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
+  gem.has_rdoc      = 'yard'
 
   gem.add_runtime_dependency 'epub-parser'
   gem.add_runtime_dependency 'rroonga'
@@ -26,4 +27,6 @@ Gem::Specification.new do |gem|
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'bundler'
+  gem.add_development_dependency 'test-unit'
+  gem.add_development_dependency 'yard'
 end
