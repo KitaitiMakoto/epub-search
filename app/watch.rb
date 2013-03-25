@@ -10,7 +10,6 @@ class Watch
     @directories = directories
     @db = EPUB::Search::Database.new(db_file)
     _, @notification = NOTIFICATION.find {|command, _| ! `which #{command.shellescape}`.empty?} rescue nil
-    @notification ||= {}
   end
 
   def run
@@ -87,6 +86,6 @@ class Watch
 
   def notify(message)
     $stderr.puts message
-    @notification[message]
+    @notification.call message if @notification
   end
 end
