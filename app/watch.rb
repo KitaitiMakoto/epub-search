@@ -9,7 +9,7 @@ class Watch
     raise ArgumentError, 'specify at least one directory' if directories.empty?
     @directories = directories
     @db = EPUB::Search::Database.new(db_file)
-    _, @notification = NOTIFICATION.find {|command, _| ! `which #{command.shellescape}`.empty?}
+    _, @notification = NOTIFICATION.find {|command, _| ! `which #{command.shellescape}`.empty?} rescue nil
     @notification ||= {}
   end
 
