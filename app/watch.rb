@@ -1,3 +1,5 @@
+require 'notify'
+
 class Watch
   EPUB_RE = /\.epub\Z/io
   NOTIFICATION = {
@@ -86,6 +88,6 @@ class Watch
 
   def notify(message)
     $stderr.puts message
-    @notification.call message if @notification
+    Notify.notify $PROGRAM_NAME, message
   end
 end
