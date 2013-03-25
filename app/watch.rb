@@ -1,10 +1,16 @@
 class Watch
   EPUB_RE = /\.epub\Z/io
+  NOTIFICATION = {
+    'notify-send'       => ->(message) {`notify-send #{$PROGRAM_NAME.shellescape} #{message.shellescape}`},
+    'terminal-notifier' => ->(message) {`terminal-notifier -title #{$PROGRAM_NAME.shellescape} -message #{message.shellescape}`}
+  }
 
   def initialize(db_file, directories)
     raise ArgumentError, 'specify at least one directory' if directories.empty?
     @directories = directories
     @db = EPUB::Search::Database.new(db_file)
+    _, @notification = NOTIFICATION.find {|command, _| ! `which #{command.shellescape}`.empty?}
+    @notification ||= {}
   end
 
   def run
@@ -81,7 +87,6 @@ class Watch
 
   def notify(message)
     $stderr.puts message
-    `notify-send #{$PROGRAM_NAME.shellescape} #{message.shellescape}` unless `which notify-send`.empty?
-    `terminal-notifier -title #{$PROGRAM_NAME.shellescape} -message #{message.shellescape}` unless `which terminal-notifier`.empty?
+    @notification[message]
   end
 end
