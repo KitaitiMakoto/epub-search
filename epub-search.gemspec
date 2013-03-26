@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = EPUB::Search::VERSION
   gem.authors       = ["KITAITI Makoto"]
   gem.email         = ["KitaitiMakoto@gmail.com"]
-  gem.description   = %q{Provides tool and library of full text search for EPUB files}
-  gem.summary       = %q{Full text search for EPUB}
+  gem.description   = %q{Provides tool and library of full text search for EPUB books}
+  gem.summary       = %q{Full text search for EPUB books}
   # gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)
