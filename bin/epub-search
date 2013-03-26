@@ -34,10 +34,10 @@ Class.new(Thor) {
   end
 
   method_option :color, :type => :string, :aliasis => :colour, :default => 'auto', :desc => 'Color search word in search result. auto, always and never is available. --no-color also is available as never', :banner => 'WHEN'
-  desc 'search WORD', 'Search WORD from database'
-  def search(word)
+  desc 'search WORD [BOOK]', 'Search WORD in book whose title is like BOOK from database'
+  def search(word, book=nil)
     raise 'Invalid argument for color option' unless [nil, 'auto', 'always', 'never'].include? options[:color]
-    Search.new(config[:db_dir], word).run(options[:color])
+    Search.new(config[:db_dir], word, book).run(options[:color])
   end
 
   desc 'watch [DIRECTORY [DIRECTORY ...]]', 'Index all of EPUB files in DIRECTORY'

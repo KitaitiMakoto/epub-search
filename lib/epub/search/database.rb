@@ -82,9 +82,13 @@ module EPUB
         record_count
       end
 
-      def search(word)
+      def search(word, book=nil)
         open do
-          result = pages.select {|record| record['content'] =~ word}.group_by(&:location)
+          result = pages.select {|record|
+            conditions = [record.content =~ word]
+            conditions << (record.book_title =~ book) if book
+            conditions
+          }.group_by(&:location)
           yield result
         end
       end
