@@ -51,9 +51,10 @@ Class.new(Thor) {
     Remove.new(config[:db_dir], file).run
   end
 
-  desc 'list', 'Show list of books in database'
+  method_option :path, :typ => :boolean, :aliases => '-p', :default => false, :desc => 'Swho book paths'
+  desc 'list', 'Show list of book titles in database'
   def list
-    List.new(config[:db_dir]).run
+    List.new(config[:db_dir]).run(options[:path])
   end
 
   private

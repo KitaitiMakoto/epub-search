@@ -3,7 +3,7 @@ class List
     @db= EPUB::Search::Database.new(db_dir)
   end
 
-  def run
-    puts @db.books
+  def run(path=false)
+    puts @db.books(path)
   end
 end

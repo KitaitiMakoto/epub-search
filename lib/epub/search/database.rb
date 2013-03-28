@@ -99,10 +99,11 @@ module EPUB
         end
       end
 
-      def books
+      def books(path=false)
         open do
           pages.group_by(&:location).collect {|location, records|
-            records.first.book_title
+            result  =records.first.book_title
+            result << " - #{location}" if path
           }
         end
       end
