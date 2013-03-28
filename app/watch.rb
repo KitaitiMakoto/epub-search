@@ -24,7 +24,8 @@ class Watch
           begin
             @db.remove file_path
             @db.add file_path
-            notify %Q|UPDATED: #{file_path}|
+            title = EPUB::Parser.parse(file_path).title
+            notify %Q|UPDATED: #{title}\n#{file_path}|
           rescue => error
             $stderr.puts error
           end
@@ -34,7 +35,8 @@ class Watch
           file_path.force_encoding 'UTF-8'
           begin
             @db.add file_path
-            notify %Q|ADDED: #{file_path}|
+            title = EPUB::Parser.parse(file_path).title
+            notify %Q|ADDED: #{title}\n#{file_path}|
           rescue => error
             $stderr.puts error
           end
@@ -44,7 +46,7 @@ class Watch
           file_path.force_encoding 'UTF-8'
           begin
             @db.remove file_path
-            notify %Q|REMOVED: #{file_path}|
+            notify %Q|REMOVED:\n#{file_path}|
           rescue => error
             $stderr.puts error
           end
@@ -73,7 +75,8 @@ class Watch
           removed = @db.remove(file_path)
           @db.add file_path
           operation = removed.zero? ? 'ADDED' : 'UPDATED'
-          notify "#{operation}: #{file_path}"
+          title = EPUB::Parser.parse(file_path).title
+          notify "#{operation}: #{title}\n#{file_path}"
         rescue => error
           $stderr.puts error
         end
