@@ -42,6 +42,7 @@ module EPUB
         end
       end
 
+      # @param [Pathname|String] path path of book
       # @return [Integer] the number of added recoreds
       def add(file_path)
         file_path = Pathname.new(file_path) unless file_path.kind_of? Pathname
@@ -65,6 +66,7 @@ module EPUB
         record_count
       end
 
+      # @param [Pathname|String] file_path path of book
       # @return [Integer] the number of removed recoreds
       def remove(file_path)
         file_path = Pathname.new(file_path) unless file_path.kind_of? Pathname
@@ -82,6 +84,10 @@ module EPUB
         record_count
       end
 
+      # @param [String] word search word
+      # @param [String] book book title
+      # @yieldparam [Hash] result search result.
+      #             the key is file path and the value is an array of records
       def search(word, book=nil)
         open do
           result = pages.select {|record|
