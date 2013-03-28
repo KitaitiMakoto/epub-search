@@ -51,6 +51,11 @@ Class.new(Thor) {
     Remove.new(config[:db_dir], file).run
   end
 
+  desc 'list', 'Show list of books in database'
+  def list
+    List.new(config[:db_dir]).run
+  end
+
   private
 
   def config
