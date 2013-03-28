@@ -24,7 +24,7 @@ class Watch
           begin
             @db.remove file_path
             @db.add file_path
-            notify %Q|MODIFIED: #{file_path}|
+            notify %Q|UPDATED: #{file_path}|
           rescue => error
             $stderr.puts error
           end
@@ -72,7 +72,7 @@ class Watch
         begin
           removed = @db.remove(file_path)
           @db.add file_path
-          operation = removed.zero? ? 'ADDED' : 'MODIFIED'
+          operation = removed.zero? ? 'ADDED' : 'UPDATED'
           notify "#{operation}: #{file_path}"
         rescue => error
           $stderr.puts error
