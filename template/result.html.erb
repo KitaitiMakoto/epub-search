@@ -1,0 +1,16 @@
+<table>
+  <tr><th>book</th><th>line</th><th>location</th></tr>
+  <% @result.each_pair do |location, records| %>
+    <% records.each do |record| %>
+      <% record['content'].each_line do |line| %>
+        <% if line =~ /(?<query>#{Regexp.escape(@query)})/io %>
+          <tr>
+            <td><a href="file://<%=h location%>" title="<%=h record['book_title'] %>"><%=h record['book_title'] %></a></td>
+            <td><%=h(line).gsub /(?<query>#{Regexp.escape(@query)})/io, "<em>#{h $~[:query]}</em>" %></td>
+            <td><a href="file://<%=h location %>" title="<%=h record['book_title'] %>"><%=h location %></a></td>
+          </tr>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</table>

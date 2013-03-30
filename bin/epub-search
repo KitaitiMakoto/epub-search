@@ -5,10 +5,6 @@ require 'epub/search'
 
 Class.new(Thor) {
   APP_DIR = File.expand_path('../../app', __FILE__)
-  DEFAULT_CONFIG = {
-    :config_path => File.join(Dir.home, '.epub-search/config.yaml'),
-    :db_dir      => File.join(Dir.home, '.epub-search/db')
-  }
   Dir["#{APP_DIR}/*.rb"].each do |path|
     require path
   end
@@ -19,7 +15,7 @@ Class.new(Thor) {
     end
   end
 
-  class_option :config, :type => :string, :aliases => '-c', :default => DEFAULT_CONFIG[:config_path], :desc => 'Path to config file'
+  class_option :config, :type => :string, :aliases => '-c', :default => EPUB::Search::DEFAULT_CONFIG[:config_path], :desc => 'Path to config file'
 
   method_option :force, :type => :boolean, :aliases => '-f', :default => false, :desc => 'Remove existing database before init'
   desc 'init [DB_DIR]', 'Setup database'
@@ -51,6 +47,11 @@ Class.new(Thor) {
     Remove.new(config[:db_dir], file).run
   end
 
+  desc 'server', 'Run server'
+  def server
+    Server.new(config[:db_dir]).run
+  end
+
   method_option :path, :typ => :boolean, :aliases => '-p', :default => false, :desc => 'Swho book paths'
   desc 'list', 'Show list of book titles in database'
   def list
@@ -63,10 +64,9 @@ Class.new(Thor) {
     return @config if @config
 
     config_file = options[:config] ||
-      (File.file?('.epub-searchrc') ? '.epub-searchrc'
-                                    : File.join(Dir.home, '.epub-search', 'epub-searchrc'))
+      (File.file?('.epub-searchrc') ? '.epub-searchrc' : EPUB::Search::DEFAULT_CONFIG[:config_path])
     conf = YAML.load_file(config_file) if File.file? config_file.to_s
 
-    @config = DEFAULT_CONFIG.merge(conf || {})
+    @config = EPUB::Search::DEFAULT_CONFIG.merge(conf || {})
   end
 }.start

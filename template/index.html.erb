@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<title>EPUB Search</title>
+<style type="text/css">
+  em {color: red; font-weight: bold; font-style: normal;}
+  td {border-bottom: solid black thin;}
+</style>
+<h1>EPUB Search</h1>
+<form methdo="get">
+  <input name="query" type="search" value="<%= @query %>">
+  <input type="submit">
+</form>
+<%= @search_result %>
