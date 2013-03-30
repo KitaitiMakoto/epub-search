@@ -1,4 +1,5 @@
 require 'rack'
+require 'tilt'
 require 'erb'
 
 module EPUB
@@ -20,11 +21,11 @@ module EPUB
         if @query
           @db.search @query do |result|
             @result = result
-            @search_result = ERB.new(File.read(File.join(TEMPLATE_DIR, 'result.html.erb'))).result(binding)
+            @search_result = Tilt.new(File.join(TEMPLATE_DIR, 'result.html.erb')).render(self)
           end
         end
         @response.headers['Content-Type'] = 'text/html; charset=UTF-8'
-        @response.body = ERB.new(File.read(File.join(TEMPLATE_DIR, 'index.html.erb'))).result(binding).each_line
+        @response.body = Tilt.new(File.join(TEMPLATE_DIR, 'index.html.erb')).render(self).each_line
         @response.finish
       end
     end

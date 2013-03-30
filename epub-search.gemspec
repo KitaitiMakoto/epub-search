@@ -26,6 +26,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'highline'
   gem.add_runtime_dependency 'notify'
   gem.add_runtime_dependency 'rack'
+  gem.add_runtime_dependency 'tilt'
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'bundler'
