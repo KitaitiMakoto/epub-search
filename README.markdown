@@ -29,6 +29,20 @@ To watch directories in backend:
 
     $ epub-search watch >/dev/null 2>&1 &
 
+Configuration
+-------------
+
+EPUB Search(`epub-search` command) detectes configuration file following by this order:
+
+1. A file specified by `--config` global option
+2. `.epub-searchrc` in current directory
+3. `$HOME/.epub-search/config.yaml`
+
+Configuration file should be written as YAML and you can set properties below:
+
+* :db_dir: String. Groonga database directory, defaults to $HOME/.epub-search/db
+* :directories: Array of String. Directories `watch` subcommand watches.
+
 Contributing
 ------------
 
