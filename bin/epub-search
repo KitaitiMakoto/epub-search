@@ -61,12 +61,6 @@ Class.new(Thor) {
   private
 
   def config
-    return @config if @config
-
-    config_file = options[:config] ||
-      (File.file?('.epub-searchrc') ? '.epub-searchrc' : EPUB::Search::DEFAULT_CONFIG[:config_path])
-    conf = YAML.load_file(config_file) if File.file? config_file.to_s
-
-    @config = EPUB::Search::DEFAULT_CONFIG.merge(conf || {})
+    EPUB::Search.config(options[:config])
   end
 }.start
