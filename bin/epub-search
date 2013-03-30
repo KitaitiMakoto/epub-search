@@ -15,7 +15,7 @@ Class.new(Thor) {
     end
   end
 
-  class_option :config, :type => :string, :aliases => '-c', :default => EPUB::Search::DEFAULT_CONFIG[:config_path], :desc => 'Path to config file'
+  class_option :config, :type => :string, :aliases => '-c', :default => nil, :desc => 'Path to config file'
 
   method_option :force, :type => :boolean, :aliases => '-f', :default => false, :desc => 'Remove existing database before init'
   desc 'init [DB_DIR]', 'Setup database'
