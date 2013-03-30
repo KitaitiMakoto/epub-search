@@ -1,26 +1,25 @@
-# EPUB Search
+EPUB Search
+===========
 
 Search engine for EPUB files on local machine
 
-## Installation
+Installation
+------------
 
-<!--
     $ gem install epub-search
--->
 
-    git clone git://github.com/KitaitiMakoto/epub-search.git
-    cd epub-search
-    rake install
-
-## Usage
+Usage
+-----
 
     $ epub-search help
-    Tasks:
+    Commands:
       epub-search add FILE                           # Add FILE to database
-      epub-search help [TASK]                        # Describe available tasks or one specific task
+      epub-search help [COMMAND]                     # Describe available commands or one specific command
       epub-search init [DB_DIR]                      # Setup database
+      epub-search list                               # Show list of book titles in database
       epub-search remove FILE                        # Remove FILE from database
-      epub-search search WORD                        # Search WORD from database
+      epub-search search WORD [BOOK]                 # Search WORD in book whose title is like BOOK from database
+      epub-search server                             # Run server
       epub-search watch [DIRECTORY [DIRECTORY ...]]  # Index all of EPUB files in DIRECTORY
     
     Options:
@@ -30,7 +29,8 @@ To watch directories in backend:
 
     $ epub-search watch >/dev/null 2>&1 &
 
-## Contributing
+Contributing
+------------
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
