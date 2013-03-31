@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["KitaitiMakoto@gmail.com"]
   gem.description   = %q{Provides tool and library of full text search for EPUB books}
   gem.summary       = %q{Full text search for EPUB books}
-  # gem.homepage      = ""
+  gem.homepage      = "https://github.com/KitaitiMakoto/epub-search"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
