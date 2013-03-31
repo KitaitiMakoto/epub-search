@@ -26,6 +26,7 @@ class Watch
             @db.add file_path
             title = EPUB::Parser.parse(file_path).title
             notify %Q|UPDATED: #{title}\n#{file_path}|
+            FileUtils.touch exit_time_file
           rescue => error
             $stderr.puts error
           end
@@ -37,6 +38,7 @@ class Watch
             @db.add file_path
             title = EPUB::Parser.parse(file_path).title
             notify %Q|ADDED: #{title}\n#{file_path}|
+            FileUtils.touch exit_time_file
           rescue => error
             $stderr.puts error
           end
@@ -47,6 +49,7 @@ class Watch
           begin
             @db.remove file_path
             notify %Q|REMOVED:\n#{file_path}|
+            FileUtils.touch exit_time_file
           rescue => error
             $stderr.puts error
           end
@@ -77,6 +80,7 @@ class Watch
           operation = removed.zero? ? 'ADDED' : 'UPDATED'
           title = EPUB::Parser.parse(file_path).title
           notify "#{operation}: #{title}\n#{file_path}"
+          FileUtils.touch exit_time_file
         rescue => error
           $stderr.puts error
         end
