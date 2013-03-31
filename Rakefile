@@ -5,5 +5,7 @@ require 'bundler/gem_tasks'
 
 task :default => :test
 
-Rake::TestTask.new
+Rake::TestTask.new do |t|
+  t.options = '--verbose'
+end
 YARD::Rake::YardocTask.new
