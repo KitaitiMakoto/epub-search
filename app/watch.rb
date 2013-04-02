@@ -9,7 +9,8 @@ class Watch
     @db = EPUB::Search::Database.new(db_file)
   end
 
-  def run
+  def run(notify_on_change=true)
+    @notify = notify_on_change
     $PROGRAM_NAME = File.basename($PROGRAM_NAME)
     $stderr.puts 'start to watch:'
     @directories.each do |dir|
@@ -62,6 +63,10 @@ class Watch
 
   private
 
+  def notify?
+    @notify
+  end
+
   def exit_time
     @exittime ||= File.mtime(exit_time_file)
   end
@@ -90,6 +95,6 @@ class Watch
 
   def notify(message)
     $stderr.puts message
-    Notify.notify $PROGRAM_NAME, message
+    Notify.notify $PROGRAM_NAME, message if notify?
   end
 end
