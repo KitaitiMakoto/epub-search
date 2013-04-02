@@ -4,7 +4,7 @@ require 'thor'
 require 'epub/search'
 
 Class.new(Thor) {
-  APP_DIR = File.expand_path('../../app', __FILE__)
+  APP_DIR = File.expand_path('../app', __dir__)
   Dir["#{APP_DIR}/*.rb"].each do |path|
     require path
   end
