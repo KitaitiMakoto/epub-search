@@ -52,7 +52,7 @@ Class.new(Thor) {
     Server.new(config[:db_dir]).run
   end
 
-  method_option :path, :typ => :boolean, :aliases => '-p', :default => false, :desc => 'Swho book paths'
+  method_option :path, :type => :boolean, :aliases => '-p', :default => false, :desc => 'Swho book paths'
   desc 'list', 'Show list of book titles in database'
   def list
     List.new(config[:db_dir]).run(options[:path])
