@@ -32,9 +32,9 @@ module EPUB
           table.text 'content'
         end
         Groonga::Schema.create_table 'Terms',
-        :type => :patricia_trie,
-        :normalizer => :NormalizerAuto,
-        :default_tokenizer => 'TokenBigram'
+                                     :type => :patricia_trie,
+                                     :normalizer => :NormalizerAuto,
+                                     :default_tokenizer => 'TokenBigram'
         Groonga::Schema.change_table 'Terms' do |table|
           table.index 'Pages.book_title'
           table.index 'Pages.metadata'
@@ -70,11 +70,11 @@ module EPUB
       # @return [Integer] the number of removed recoreds
       def remove(file_path)
         file_path = Pathname.new(file_path) unless file_path.kind_of? Pathname
-        location = file_path.expand_path.to_path
+        location = file_path.expand_path
         record_count = 0
         open do
           records = pages.select {|record|
-            record.location == location
+            record.location == location.to_path
           }
           records.each do |record|
             record.key.delete
@@ -102,7 +102,7 @@ module EPUB
       def books(path=false)
         open do
           pages.group_by(&:location).collect {|location, records|
-            result  =records.first.book_title
+            result = records.first.book_title
             result << " - #{location}" if path
           }
         end
