@@ -104,6 +104,7 @@ module EPUB
           pages.group_by(&:location).collect {|location, records|
             result = records.first.book_title
             result << " - #{location}" if path
+            result
           }
         end
       end
