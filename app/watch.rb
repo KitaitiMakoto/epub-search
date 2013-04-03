@@ -9,14 +9,17 @@ class Watch
     @db = EPUB::Search::Database.new(db_file)
   end
 
-  def run(notify_on_change=true)
+  def run(notify_on_change: true, daemonize: false)
     @notify = notify_on_change
+    @daemonize = daemonize
+
     $PROGRAM_NAME = File.basename($PROGRAM_NAME)
     $stderr.puts 'start to watch:'
     @directories.each do |dir|
       $stderr.puts "  * #{dir}"
     end
     catch_up
+    Process.daemon
     begin
       Listen.to *@directories, :filter => EPUB_RE do |modified, added, removed|
         modified.each do |file_path|

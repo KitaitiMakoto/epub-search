@@ -36,11 +36,12 @@ Class.new(Thor) {
     Search.new(config[:db_dir], word, book).run(options[:color])
   end
 
+  method_option :daemonize, :type => :boolean, :default => false, :desc => 'Watch in background'
   method_option :notify, :type => :boolean, :default => true, :desc => 'Notify on adding/updating/removing files'
   desc 'watch [DIRECTORY [DIRECTORY ...]]', 'Index all of EPUB files in DIRECTORY'
   def watch(*directories)
     directories = config[:directories] if directories.empty?
-    Watch.new(config[:db_dir], directories).run(options[:notify])
+    Watch.new(config[:db_dir], directories).run(notify_on_change: options[:notify], daemonize: options[:daemonize])
   end
 
   desc 'remove FILE', 'Remove FILE from database'
