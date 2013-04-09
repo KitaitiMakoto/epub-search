@@ -9,9 +9,13 @@ class Watch
     @db = EPUB::Search::Database.new(db_file)
   end
 
-  def run(notify_on_change: true, daemonize: false)
-    @notify = notify_on_change
-    @daemonize = daemonize
+  def run(notify_on_change: true, daemonize: false, debug: false)
+    @notify, @daemonize, @debug = notify_on_change, daemonize, debug
+    if @debug
+      $stderr.puts "notify_on_change: #{@notify}"
+      $stderr.puts "daemonize: #{@daemonize}"
+      $stderr.puts "debug: #{@debug}"
+    end
 
     $PROGRAM_NAME = File.basename($PROGRAM_NAME)
     $stderr.puts 'start to watch:'
@@ -19,20 +23,23 @@ class Watch
       $stderr.puts "  * #{dir}"
     end
     catch_up
-    Process.daemon
+    Process.daemon if @daemonize
     begin
       Listen.to *@directories, :filter => EPUB_RE do |modified, added, removed|
         modified.each do |file_path|
           next unless file_path =~ EPUB_RE
           file_path.force_encoding 'UTF-8'
           begin
+            $stderr.puts "remove #{file_path}"
             @db.remove file_path
+            $stderr.puts "add #{file_path}"
             @db.add file_path
             title = EPUB::Parser.parse(file_path).title
             notify %Q|UPDATED: #{title}\n#{file_path}|
             FileUtils.touch exit_time_file
           rescue => error
             $stderr.puts error
+            $stderr.puts error.backtrace if @debug
           end
         end
         added.each do |file_path|
@@ -45,6 +52,7 @@ class Watch
             FileUtils.touch exit_time_file
           rescue => error
             $stderr.puts error
+            $stderr.puts error.backtrace if @debug
           end
         end
         removed.each do |file_path|
@@ -56,6 +64,7 @@ class Watch
             FileUtils.touch exit_time_file
           rescue => error
             $stderr.puts error
+            $stderr.puts error.backtrace if @debug
           end
         end
       end
@@ -91,6 +100,7 @@ class Watch
           FileUtils.touch exit_time_file
         rescue => error
           $stderr.puts error
+          $stderr.puts error.backtrace if @debug
         end
       end
     end
