@@ -25,7 +25,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'rb-inotify'
   gem.add_runtime_dependency 'listen'
   gem.add_runtime_dependency 'highline'
-  gem.add_runtime_dependency 'notify'
+  gem.add_runtime_dependency 'notify', '0.5.0'
   gem.add_runtime_dependency 'rack'
   gem.add_runtime_dependency 'tilt'
 
