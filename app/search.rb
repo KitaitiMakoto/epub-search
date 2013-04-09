@@ -1,7 +1,7 @@
 class Search
-  def initialize(db_dir, search_word, book=nil)
+  def initialize(dir, search_word, book=nil)
     @word, @book = search_word, book
-    @db = EPUB::Search::Database.new(db_dir)
+    @db = EPUB::Search::Database.new(File.join(dir, EPUB::Search::Database::DIR_NAME))
   end
 
   def run(color=$stdout.tty?)

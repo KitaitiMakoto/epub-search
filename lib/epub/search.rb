@@ -4,12 +4,15 @@ require 'epub/parser'
 require 'groonga'
 require 'listen'
 require 'highline'
+require 'epub/search/database'
+require 'epub/search/formatter'
+require 'epub/search/server'
 
 module EPUB
   module Search
     DEFAULT_CONFIG = {
       :config_path => File.join(Dir.home, '.epub-search/config.yaml'),
-      :db_dir      => File.join(Dir.home, '.epub-search/db')
+      :dir         => File.join(Dir.home, '.epub-search')
     }
 
     class << self
@@ -23,7 +26,3 @@ module EPUB
     end
   end
 end
-
-require 'epub/search/database'
-require 'epub/search/formatter'
-require 'epub/search/server'

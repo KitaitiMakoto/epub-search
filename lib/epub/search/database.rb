@@ -1,6 +1,7 @@
 module EPUB
   module Search
     class Database
+      DIR_NAME  = 'db'
       FILE_NAME = 'epub-search.db'
 
       attr_reader :db_dir
@@ -19,7 +20,7 @@ module EPUB
       end
 
       def init(force=false)
-        @db_dir.rmtree if force
+        @db_dir.rmtree if force && @db_dir.exist?
         @db_dir.mkpath
         Groonga::Database.create :path => db_file.to_path
         Groonga::Schema.create_table 'Pages', :type => :array

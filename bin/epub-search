@@ -18,22 +18,22 @@ Class.new(Thor) {
   class_option :config, :type => :string, :aliases => '-c', :default => nil, :desc => 'Path to config file'
 
   method_option :force, :type => :boolean, :aliases => '-f', :default => false, :desc => 'Remove existing database before init'
-  desc 'init [DB_DIR]', 'Setup database'
-  def init(db_dir=config[:db_dir])
-    Init.new(db_dir).run(options[:force])
+  desc 'init [DIR]', 'Setup database'
+  def init(dir=config[:dir])
+    Init.new(dir).run(options[:force])
   end
 
   method_option :update, :type => :boolean, :default => true, :desc => 'Remove existing indices of given book before adding'
   desc 'add FILE', 'Add FILE to database'
   def add(file)
-    Add.new(config[:db_dir], file).run(options[:update])
+    Add.new(config[:dir], file).run(options[:update])
   end
 
   method_option :color, :type => :string, :aliasis => :colour, :default => 'auto', :desc => 'Color search word in search result. auto, always and never is available. --no-color also is available as never', :banner => 'WHEN'
   desc 'search WORD [BOOK]', 'Search WORD in book whose title is like BOOK from database'
   def search(word, book=nil)
     raise 'Invalid argument for color option' unless [nil, 'auto', 'always', 'never'].include? options[:color]
-    Search.new(config[:db_dir], word, book).run(options[:color])
+    Search.new(config[:dir], word, book).run(options[:color])
   end
 
   method_option :daemonize, :type => :boolean, :default => false, :desc => 'Watch in background'
@@ -42,23 +42,23 @@ Class.new(Thor) {
   desc 'watch [DIRECTORY [DIRECTORY ...]]', 'Index all of EPUB files in DIRECTORY'
   def watch(*directories)
     directories = config[:directories] if directories.empty?
-    Watch.new(config[:db_dir], directories).run(notify_on_change: options[:notify], daemonize: options[:daemonize], debug: options[:debug])
+    Watch.new(config[:dir], directories).run(notify_on_change: options[:notify], daemonize: options[:daemonize], debug: options[:debug])
   end
 
   desc 'remove FILE', 'Remove FILE from database'
   def remove(file)
-    Remove.new(config[:db_dir], file).run
+    Remove.new(config[:dir], file).run
   end
 
   desc 'server', 'Run server'
   def server
-    Server.new(config[:db_dir]).run
+    Server.new(config[:dir]).run
   end
 
   method_option :path, :type => :boolean, :aliases => '-p', :default => false, :desc => 'Swho book paths'
   desc 'list', 'Show list of book titles in database'
   def list
-    List.new(config[:db_dir]).run(options[:path])
+    List.new(config[:dir]).run(options[:path])
   end
 
   private

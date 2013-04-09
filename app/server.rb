@@ -1,6 +1,6 @@
 class Server
-  def initialize(db_dir)
-    @db = EPUB::Search::Database.new(db_dir)
+  def initialize(dir)
+    @db = EPUB::Search::Database.new(File.join(dir, EPUB::Search::Database::DIR_NAME))
   end
 
   def run

@@ -3,10 +3,10 @@ require 'notify'
 class Watch
   EPUB_RE = /\.epub\Z/io
 
-  def initialize(db_file, directories)
+  def initialize(work_dir, directories)
     raise ArgumentError, 'specify at least one directory' if directories.empty?
-    @directories = directories
-    @db = EPUB::Search::Database.new(db_file)
+    @directories = directories.map {|dir| File.expand_path(dir)}
+    @db = EPUB::Search::Database.new(File.join(work_dir, EPUB::Search::Database::DIR_NAME))
   end
 
   def run(notify_on_change: true, daemonize: false, debug: false)

@@ -15,7 +15,7 @@ Usage
     Commands:
       epub-search add FILE                           # Add FILE to database
       epub-search help [COMMAND]                     # Describe available commands or one specific command
-      epub-search init [DB_DIR]                      # Setup database
+      epub-search init [DIR]                         # Setup database
       epub-search list                               # Show list of book titles in database
       epub-search remove FILE                        # Remove FILE from database
       epub-search search WORD [BOOK]                 # Search WORD in book whose title is like BOOK from database
@@ -40,8 +40,19 @@ EPUB Search(`epub-search` command) detectes configuration file following by this
 
 Configuration file should be written as YAML and you can set properties below:
 
-* :db_dir: String. Groonga database directory, defaults to $HOME/.epub-search/db
+* :dir: String. Directory for Groonga database and other files, defaults to $HOME/.epub-search/db
 * :directories: Array of String. Directories `watch` subcommand watches.
+
+ChangeLog
+---------
+
+### 0.0.2
+* Ruby vertion limited to 2.0
+* Database directory changed
+  * Exec `epub-search init` again
+
+### 0.0.1
+* First release
 
 Contributing
 ------------
