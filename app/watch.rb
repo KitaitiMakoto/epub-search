@@ -2,11 +2,13 @@ require 'notify'
 
 class Watch
   EPUB_RE = /\.epub\Z/io
+  PID_FILE_NAME = 'epub-search.pid'
 
   def initialize(work_dir, directories)
     raise ArgumentError, 'specify at least one directory' if directories.empty?
+    @work_dir = Pathname === work_dir ? work_dir : Pathname.new(work_dir)
     @directories = directories.map {|dir| File.expand_path(dir)}
-    @db = EPUB::Search::Database.new(File.join(work_dir, EPUB::Search::Database::DIR_NAME))
+    @db = EPUB::Search::Database.new(File.join(@work_dir.to_path, EPUB::Search::Database::DIR_NAME))
   end
 
   def run(notify_on_change: true, daemonize: false, debug: false)
@@ -23,6 +25,7 @@ class Watch
       $stderr.puts "  * #{dir}"
     end
     Process.daemon if @daemonize
+    write_pid_file
     catch_up
     begin
       Listen.to *@directories, :filter => EPUB_RE do |modified, added, removed|
@@ -69,6 +72,7 @@ class Watch
         end
       end
     ensure
+      pid_file.delete
       FileUtils.touch exit_time_file
     end
   end
@@ -87,6 +91,10 @@ class Watch
     @db.db_dir.join('../exittime').to_path
   end
 
+  def pid_file
+    @work_dir + PID_FILE_NAME
+  end
+
   def catch_up
     @directories.each do |dir|
       Dir["#{dir}/**/*.epub"].each do |file_path|
@@ -103,6 +111,23 @@ class Watch
           $stderr.puts error.backtrace if @debug
         end
       end
+    end
+  rescue
+    pid_file.unlink
+  end
+
+  def write_pid_file
+    if pid_file.exist?
+      pid = pid_file.read.to_i
+      begin
+        Process.kill 0, pid
+        raise "#{$PROGRAM_NAME}(pid: #{pid}) is running"
+      rescue Errno::ESRCH
+      end
+    end
+    $stderr.puts "pid: #{Process.pid}" if @debug
+    pid_file.open 'wb' do |file|
+      file.write Process.pid
     end
   end
 
