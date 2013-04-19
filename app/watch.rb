@@ -22,8 +22,8 @@ class Watch
     @directories.each do |dir|
       $stderr.puts "  * #{dir}"
     end
-    catch_up
     Process.daemon if @daemonize
+    catch_up
     begin
       Listen.to *@directories, :filter => EPUB_RE do |modified, added, removed|
         modified.each do |file_path|
