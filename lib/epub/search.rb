@@ -6,6 +6,7 @@ require 'listen'
 require 'highline'
 require 'celluloid'
 require 'epub/search/database'
+require 'epub/search/database/actor'
 require 'epub/search/formatter'
 require 'epub/search/server'
 
