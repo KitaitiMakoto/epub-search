@@ -46,6 +46,9 @@ Configuration file should be written as YAML and you can set properties below:
 ChangeLog
 ---------
 
+### 0.0.3
+* Specify the version of Listen gem
+
 ### 0.0.2
 * Ruby vertion limited to 2.0
 * Database directory changed
