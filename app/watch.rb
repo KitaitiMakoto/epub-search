@@ -27,7 +27,7 @@ class Watch
     Process.daemon if @daemonize
     write_pid_file
 
-    @actor = EPUB::Search::Database::Actor.new(@db)
+    EPUB::Search::Database::Actor.supervise_as :db, @db
 
     catch_up
     begin
@@ -37,7 +37,7 @@ class Watch
           file_path.force_encoding 'UTF-8'
           begin
             $stderr.puts "update #{file_path}"
-            @actor.async.update file_path
+            Celluloid::Actor[:db].async.update file_path
             title = EPUB::Parser.parse(file_path).title
             notify %Q|UPDATED: #{title}\n#{file_path}|
             FileUtils.touch exit_time_file
@@ -50,7 +50,7 @@ class Watch
           next unless file_path =~ EPUB_RE
           file_path.force_encoding 'UTF-8'
           begin
-            @actor.async.add file_path
+            Celluloid::Actor[:db].async.add file_path
             title = EPUB::Parser.parse(file_path).title
             notify %Q|ADDED: #{title}\n#{file_path}|
             FileUtils.touch exit_time_file
@@ -63,7 +63,7 @@ class Watch
           next unless file_path =~ EPUB_RE
           file_path.force_encoding 'UTF-8'
           begin
-            @actor.async.remove file_path
+            Celluloid::Actor[:db].async.remove file_path
             notify %Q|REMOVED:\n#{file_path}|
             FileUtils.touch exit_time_file
           rescue => error
@@ -101,8 +101,8 @@ class Watch
       Dir["#{dir}/**/*.epub"].each do |file_path|
         next if File.file? exit_time_file and File.mtime(file_path) < exit_time
         begin
-          removed = @actor.remove(file_path)
-          @actor.async.add file_path
+          removed = Celluloid::Actor[:db].remove(file_path)
+          Celluloid::Actor[:db].async.add file_path
           operation = removed.zero? ? 'ADDED' : 'UPDATED'
           title = EPUB::Parser.parse(file_path).title
           notify "#{operation}: #{title}\n#{file_path}"
