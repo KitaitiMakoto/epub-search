@@ -1,12 +1,17 @@
+require 'monitor'
+
 module EPUB
   module Search
     class Database
+      include MonitorMixin
+
       DIR_NAME  = 'db'
       FILE_NAME = 'epub-search.db'
 
       attr_reader :db_dir
 
       def initialize(db_dir)
+        super()
         @db_dir = Pathname === db_dir ? db_dir : Pathname.new(db_dir)
         Groonga::Context.default_options = {:encoding => :utf8}
       end
@@ -57,12 +62,14 @@ module EPUB
           title_elem = doc.search('title').first
           page_title = title_elem ? title_elem.text : ''
           body = Nokogiri.XML(doc.search('body').first.to_xml).content
-          open do
-            pages.add('location'   => location.to_s,
-                      'iri'        => content.href.to_s,
-                      'book_title' => book.title,
-                      'page_title' => page_title,
-                      'content'    => body)
+          synchronize do
+            open do
+              pages.add('location'   => location.to_s,
+                        'iri'        => content.href.to_s,
+                        'book_title' => book.title,
+                        'page_title' => page_title,
+                        'content'    => body)
+            end
           end
         end
         contents.length
@@ -74,13 +81,15 @@ module EPUB
         file_path = Pathname.new(file_path) unless file_path.kind_of? Pathname
         location = file_path.expand_path
         record_count = 0
-        open do
-          records = pages.select {|record|
-            record.location == location.to_path
-          }
-          records.each do |record|
-            record.key.delete
-            record_count += 1
+        synchronize do
+          open do
+            records = pages.select {|record|
+              record.location == location.to_path
+            }
+            records.each do |record|
+              record.key.delete
+              record_count += 1
+            end
           end
         end
         record_count
