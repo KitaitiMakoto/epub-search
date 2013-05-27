@@ -13,11 +13,8 @@ class Watch
 
   def run(notify_on_change: true, daemonize: false, debug: false)
     @notify, @daemonize, @debug = notify_on_change, daemonize, debug
-    if @debug
-      $stderr.puts "notify_on_change: #{@notify}"
-      $stderr.puts "daemonize: #{@daemonize}"
-      $stderr.puts "debug: #{@debug}"
-    end
+
+    log_run_parameters if @debug
 
     $PROGRAM_NAME = File.basename($PROGRAM_NAME)
     $stderr.puts 'start to watch:'
@@ -96,6 +93,12 @@ class Watch
   ensure
     pid_file.delete
     FileUtils.touch exit_time_file
+  end
+
+  def log_run_parameters
+    $stderr.puts "notify_on_change: #{@notify}"
+    $stderr.puts "daemonize: #{@daemonize}"
+    $stderr.puts "debug: #{@debug}"
   end
 
   def write_pid_file
