@@ -27,7 +27,7 @@ Usage
 
 To watch directories in backend:
 
-    $ epub-search watch >/dev/null 2>&1 &
+    $ epub-search watch --daemonize
 
 Configuration
 -------------
