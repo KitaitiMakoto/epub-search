@@ -49,9 +49,10 @@ module EPUB
         file_path = Pathname.new(file_path) unless file_path.kind_of? Pathname
         location = file_path.expand_path
         book = EPUB::Parser.parse(location)
-        record_count = 0
-          book.each_content do |content|
-          next unless content.media_type == 'application/xhtml+xml'
+        contents = book.each_content.select {|content|
+          content.media_type == 'application/xhtml+xml'
+        }
+        contents.each do |content|
           doc = Nokogiri.XML(content.read)
           title_elem = doc.search('title').first
           page_title = title_elem ? title_elem.text : ''
@@ -63,9 +64,8 @@ module EPUB
                       'page_title' => page_title,
                       'content'    => body)
           end
-          record_count += 1
         end
-        record_count
+        contents.length
       end
 
       # @param [Pathname|String] file_path path of book
