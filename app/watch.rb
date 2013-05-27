@@ -94,6 +94,7 @@ class Watch
   end
 
   def catch_up
+    locations = @db.locations
     @directories.each do |dir|
       Dir["#{dir}/**/*.epub"].each do |file_path|
         next if File.file? exit_time_file and File.mtime(file_path) < exit_time
@@ -110,7 +111,14 @@ class Watch
         end
       end
     end
-  rescue
+    locations.each do |location|
+      unless File.exist? location
+        Celluloid::Actor[:db].async.remove location
+        notify %Q|REMOVED:\n#{location}|
+      end
+    end
+  rescue => err
+    $stderr.puts err
     pid_file.unlink
   end
 
