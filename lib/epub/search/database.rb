@@ -54,7 +54,8 @@ module EPUB
           book.each_content do |content|
             next unless content.media_type == 'application/xhtml+xml'
             doc = Nokogiri.XML(content.read)
-            page_title = doc.search('title').first.text
+            title_elem = doc.search('title').first
+            page_title = title_elem ? title_elem.text : ''
             body = Nokogiri.XML(doc.search('body').first.to_xml).content
             pages.add('location'   => location.to_s,
                       'iri'        => content.href.to_s,
