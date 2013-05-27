@@ -30,22 +30,7 @@ class Watch
     EPUB::Search::Database::Actor.supervise_as :db, @db
 
     catch_up
-    begin
-      Listen.to! *@directories, :filter => EPUB_RE do |modified, added, removed|
-        modified.each do |file_path|
-          on_file_changed file_path, :update, 'UPDATED'
-        end
-        added.each do |file_path|
-          on_file_changed file_path, :add, 'ADDED'
-        end
-        removed.each do |file_path|
-          on_file_changed file_path, :remove, 'REMOVED'
-        end
-      end
-    ensure
-      pid_file.delete
-      FileUtils.touch exit_time_file
-    end
+    start_watch
   end
 
   private
@@ -94,6 +79,23 @@ class Watch
   rescue => err
     $stderr.puts err
     pid_file.unlink
+  end
+
+  def start_watch
+    Listen.to! *@directories, :filter => EPUB_RE do |modified, added, removed|
+      modified.each do |file_path|
+        on_file_changed file_path, :update, 'UPDATED'
+      end
+      added.each do |file_path|
+        on_file_changed file_path, :add, 'ADDED'
+      end
+      removed.each do |file_path|
+        on_file_changed file_path, :remove, 'REMOVED'
+      end
+    end
+  ensure
+    pid_file.delete
+    FileUtils.touch exit_time_file
   end
 
   def write_pid_file
