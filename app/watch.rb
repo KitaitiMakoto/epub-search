@@ -33,7 +33,6 @@ class Watch
     begin
       Listen.to! *@directories, :filter => EPUB_RE do |modified, added, removed|
         modified.each do |file_path|
-          next unless file_path =~ EPUB_RE
           file_path.force_encoding 'UTF-8'
           begin
             $stderr.puts "update #{file_path}"
@@ -47,7 +46,6 @@ class Watch
           end
         end
         added.each do |file_path|
-          next unless file_path =~ EPUB_RE
           file_path.force_encoding 'UTF-8'
           begin
             Celluloid::Actor[:db].async.add file_path
@@ -60,7 +58,6 @@ class Watch
           end
         end
         removed.each do |file_path|
-          next unless file_path =~ EPUB_RE
           file_path.force_encoding 'UTF-8'
           begin
             Celluloid::Actor[:db].async.remove file_path
