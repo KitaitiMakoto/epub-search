@@ -122,9 +122,7 @@ module EPUB
 
       def locations
         open do
-          pages.group_by(&:location).collect {|location, records|
-            location
-          }
+          pages.group_by(&:location).collect {|location, records| location}
         end
       end
 
