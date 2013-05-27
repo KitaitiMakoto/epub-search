@@ -97,17 +97,23 @@ class Watch
     locations = @db.locations
     @directories.each do |dir|
       Dir["#{dir}/**/*.epub"].each do |file_path|
-        next if File.file? exit_time_file and File.mtime(file_path) < exit_time
-        begin
-          removed = Celluloid::Actor[:db].remove(file_path)
+        if locations.include? file_path
+          next if File.file? exit_time_file and File.mtime(file_path) < exit_time
+          begin
+            removed = Celluloid::Actor[:db].remove(file_path)
+            Celluloid::Actor[:db].async.add file_path
+            operation = removed.zero? ? 'ADDED' : 'UPDATED'
+            title = EPUB::Parser.parse(file_path).title
+            notify "#{operation}: #{title}\n#{file_path}"
+            FileUtils.touch exit_time_file
+          rescue => error
+            $stderr.puts error
+            $stderr.puts error.backtrace if @debug
+          end
+        else
           Celluloid::Actor[:db].async.add file_path
-          operation = removed.zero? ? 'ADDED' : 'UPDATED'
           title = EPUB::Parser.parse(file_path).title
-          notify "#{operation}: #{title}\n#{file_path}"
-          FileUtils.touch exit_time_file
-        rescue => error
-          $stderr.puts error
-          $stderr.puts error.backtrace if @debug
+          notify "ADDED: #{title}\n#{file_path}"
         end
       end
     end

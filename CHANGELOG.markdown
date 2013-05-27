@@ -4,6 +4,8 @@ Change Log
 0.0.3
 -----
 * Specify the version of Listen gem as '>= 1.0.0' to aopt to changed API
+* Use monitor for thread safety
+* Remove record for book which was removed during watcher was sleeping
 
 0.0.2
 -----
