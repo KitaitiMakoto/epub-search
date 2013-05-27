@@ -84,17 +84,12 @@ class Watch
             $stderr.puts error.backtrace if @debug
           end
         else
-          Celluloid::Actor[:db].async.add file_path
-          title = EPUB::Parser.parse(file_path).title
-          notify "ADDED: #{title}\n#{file_path}"
+          on_file_changed file_path, :add, 'ADDED'
         end
       end
     end
     locations.each do |location|
-      unless File.exist? location
-        Celluloid::Actor[:db].async.remove location
-        notify %Q|REMOVED:\n#{location}|
-      end
+      on_file_changed location.dup, :remove, 'REMOVED' unless File.exist? location
     end
   rescue => err
     $stderr.puts err
