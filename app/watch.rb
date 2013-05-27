@@ -33,40 +33,13 @@ class Watch
     begin
       Listen.to! *@directories, :filter => EPUB_RE do |modified, added, removed|
         modified.each do |file_path|
-          file_path.force_encoding 'UTF-8'
-          begin
-            $stderr.puts "update #{file_path}"
-            Celluloid::Actor[:db].async.update file_path
-            title = EPUB::Parser.parse(file_path).title
-            notify %Q|UPDATED: #{title}\n#{file_path}|
-            FileUtils.touch exit_time_file
-          rescue => error
-            $stderr.puts error
-            $stderr.puts error.backtrace if @debug
-          end
+          on_file_changed file_path, :update, 'UPDATED'
         end
         added.each do |file_path|
-          file_path.force_encoding 'UTF-8'
-          begin
-            Celluloid::Actor[:db].async.add file_path
-            title = EPUB::Parser.parse(file_path).title
-            notify %Q|ADDED: #{title}\n#{file_path}|
-            FileUtils.touch exit_time_file
-          rescue => error
-            $stderr.puts error
-            $stderr.puts error.backtrace if @debug
-          end
+          on_file_changed file_path, :add, 'ADDED'
         end
         removed.each do |file_path|
-          file_path.force_encoding 'UTF-8'
-          begin
-            Celluloid::Actor[:db].async.remove file_path
-            notify %Q|REMOVED:\n#{file_path}|
-            FileUtils.touch exit_time_file
-          rescue => error
-            $stderr.puts error
-            $stderr.puts error.backtrace if @debug
-          end
+          on_file_changed file_path, :remove, 'REMOVED'
         end
       end
     ensure
@@ -140,6 +113,19 @@ class Watch
     $stderr.puts "pid: #{Process.pid}" if @debug
     pid_file.open 'wb' do |file|
       file.write Process.pid
+    end
+  end
+
+  def on_file_changed(file_path, operation, label)
+    file_path.force_encoding 'UTF-8'
+    begin
+      Celluloid::Actor[:db].async.__send__ operation, file_path
+      title = operation == :remove ? '' : EPUB::Parser.parse(file_path).title
+      notify %Q|#{label}: #{title}\n#{file_path}|
+      FileUtils.touch exit_time_file
+    rescue => error
+      $stderr.puts error
+      $stderr.puts error.backtrace if @debug
     end
   end
 

@@ -6,6 +6,7 @@ Change Log
 * Specify the version of Listen gem as '>= 1.0.0' to aopt to changed API
 * Use monitor for thread safety
 * Remove record for book which was removed during watcher was sleeping
+* Add recored of book which was added during watcher was sleeping
 
 0.0.2
 -----
