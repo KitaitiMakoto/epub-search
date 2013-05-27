@@ -50,20 +50,20 @@ module EPUB
         location = file_path.expand_path
         book = EPUB::Parser.parse(location)
         record_count = 0
-        open do
           book.each_content do |content|
-            next unless content.media_type == 'application/xhtml+xml'
-            doc = Nokogiri.XML(content.read)
-            title_elem = doc.search('title').first
-            page_title = title_elem ? title_elem.text : ''
-            body = Nokogiri.XML(doc.search('body').first.to_xml).content
+          next unless content.media_type == 'application/xhtml+xml'
+          doc = Nokogiri.XML(content.read)
+          title_elem = doc.search('title').first
+          page_title = title_elem ? title_elem.text : ''
+          body = Nokogiri.XML(doc.search('body').first.to_xml).content
+          open do
             pages.add('location'   => location.to_s,
                       'iri'        => content.href.to_s,
                       'book_title' => book.title,
                       'page_title' => page_title,
                       'content'    => body)
-            record_count += 1
           end
+          record_count += 1
         end
         record_count
       end
