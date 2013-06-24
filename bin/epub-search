@@ -33,6 +33,7 @@ Class.new(Thor) {
   desc 'search WORD [BOOK]', 'Search WORD in book whose title is like BOOK from database'
   def search(word, book=nil)
     raise 'Invalid argument for color option' unless [nil, 'auto', 'always', 'never'].include? options[:color]
+    Celluloid.logger = nil
     Search.new(config[:dir], word, book).run(options[:color])
   end
 
