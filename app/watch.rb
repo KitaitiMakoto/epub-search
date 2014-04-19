@@ -79,7 +79,7 @@ class Watch
   end
 
   def start_watch
-    Listen.to! *@directories, :filter => EPUB_RE do |modified, added, removed|
+    listener = Listen.to *@directories, :filter => EPUB_RE do |modified, added, removed|
       modified.each do |file_path|
         on_file_changed file_path, :update, 'UPDATED'
       end
@@ -90,6 +90,8 @@ class Watch
         on_file_changed file_path, :remove, 'REMOVED'
       end
     end
+    listener.start
+    sleep
   ensure
     pid_file.delete
     FileUtils.touch exit_time_file
