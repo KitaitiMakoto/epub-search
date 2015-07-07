@@ -46,6 +46,14 @@ Configuration file should be written as YAML and you can set properties below:
 ChangeLog
 ---------
 
+### 0.0.5
+
+* Remove version specification for Listen gem
+
+### 0.0.4
+
+* Remove recored which book was removed during sleeping
+
 ### 0.0.3
 * Specify the version of Listen gem
 
