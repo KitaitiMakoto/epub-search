@@ -19,7 +19,6 @@ Usage
       epub-search list                               # Show list of book titles in database
       epub-search remove FILE                        # Remove FILE from database
       epub-search search WORD [BOOK]                 # Search WORD in book whose title is like BOOK from database
-      epub-search server                             # Run server
       epub-search watch [DIRECTORY [DIRECTORY ...]]  # Index all of EPUB files in DIRECTORY
     
     Options:
