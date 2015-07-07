@@ -27,7 +27,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'notify', '0.5.0'
   gem.add_runtime_dependency 'rack'
   gem.add_runtime_dependency 'tilt'
-  gem.add_runtime_dependency 'celluloid'
+  gem.add_runtime_dependency 'celluloid', '0.16.0'
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'bundler'
