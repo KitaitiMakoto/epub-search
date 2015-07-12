@@ -45,6 +45,11 @@ Configuration file should be written as YAML and you can set properties below:
 ChangeLog
 ---------
 
+### 0.0.6
+
+* Lock Celluloid version to prevent compatibility breaking
+* Remove server feature
+
 ### 0.0.5
 
 * Remove version specification for Listen gem

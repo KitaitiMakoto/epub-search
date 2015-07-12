@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+0.0.6
+-----
+
+* Lock Celluloid version to prevent compatibility breaking
+* Remove server feature
+
 0.0.5
 -----
 
