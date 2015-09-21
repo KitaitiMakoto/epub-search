@@ -3,6 +3,10 @@ EPUB Search
 
 Search engine for EPUB files on local machine
 
+If you want EPUB search web application, check [EPUB Searcher][] out.
+
+[EPUB Searcher]: https://github.com/ranguba/epub-searcher
+
 Installation
 ------------
 
