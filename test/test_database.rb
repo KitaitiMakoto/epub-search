@@ -49,7 +49,7 @@ class TestDatabase < EPUB::Search::TestCase
         end
 
         def test_add_raise_error
-          assert_raise Zip::Error do
+          assert_raise Archive::Zip::UnzipError do
             @db.add @epub_path
           end
         end
